@@ -92,10 +92,10 @@ plt.show()
 
 
 ##FIRST PEAK CORRESPONDS TO 85Rb F=2
-third_peak = results.loc[(results[0] > 0.0922) & (results[0] < 0.0935)]
+third_peak = results.loc[(results[0] > 0.0945) & (results[0] < 0.0955)]
 
 popt3, pcov3 = sp.optimize.curve_fit(gauss_function, third_peak[0], third_peak[1], p0 = [-1, 0.0015, 0.01, 0],bounds=((-np.inf,-np.inf,-np.inf,-np.inf), (0,np.inf,np.inf,np.inf)),maxfev=10000)
-x_new=np.linspace(0.0922,0.0935,100)
+x_new=np.linspace(0.0945,0.0955,100)
 
 fig, ax = plt.subplots(figsize=(10,6))
 ax.plot(x_new,gauss_function(x_new,popt3[0],popt3[1],popt3[2],popt3[3]))
@@ -117,10 +117,10 @@ plt.show()
 
 
 ##FIRST PEAK CORRESPONDS TO 87Rb F=1
-fourth_peak = results.loc[(results[0] > 0.1035) & (results[0] < 0.1055)]
+fourth_peak = results.loc[(results[0] > 0.104) & (results[0] < 0.106)]
 
 popt4, pcov4 = sp.optimize.curve_fit(gauss_function, fourth_peak[0], fourth_peak[1], p0 = [-1, 0.0175, 0.001, 0],bounds=((-np.inf,-np.inf,-np.inf,-np.inf), (0,np.inf,np.inf,np.inf)),maxfev=10000)
-x_new=np.linspace(0.1035,0.1055,100)
+x_new=np.linspace(0.104,0.106,100)
 
 fig, ax = plt.subplots(figsize=(10,6))
 ax.plot(x_new,gauss_function(x_new,popt4[0],popt4[1],popt4[2],popt4[3]))
