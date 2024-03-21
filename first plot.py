@@ -7,6 +7,7 @@ Created on Thu Mar  7 09:55:01 2024
 
 import numpy as np
 import scipy as sp
+from scipy import signal
 import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
@@ -139,3 +140,94 @@ plt.xticks(size=18,color='#4f4e4e')
 plt.yticks(size=18,color='#4f4e4e')
 sns.set(style='whitegrid')
 plt.show()
+
+#----------------------------------------------------------------------------
+
+fabry_perot = results[4]
+
+y_centres = np.array([])
+x_centres = np.array([])
+
+count=0
+for i, val in enumerate(fabry_perot):
+    if val >= 0.05 and i >= count:
+        for j,j_val in enumerate(fabry_perot[i:]):
+            if j_val <= 0.05:
+                # this came to me in a dream :)
+                x_centre, y_centre = max(zip(x[i:i+j], np.convolve(fabry_perot,np.ones(10)/10,mode="same")[i:i+j]), key=lambda l: l[1])
+
+                y_centres = np.append(y_centres,y_centre)
+                x_centres = np.append(x_centres,x_centre)
+                count = i + j
+                break 
+    else:
+        continue
+
+fabry_diffs = np.ediff1d(x_centres)
+x_diffs = np.arange(0,len(fabry_diffs))
+fig, ax = plt.subplots(figsize=(10,6))
+ax.plot(x_diffs,fabry_diffs,color="red",label="Difference in Fabry-Perot Peaks")
+plt.show()
+
+max_cal = np.max(fabry_diffs)
+min_cal = np.min(fabry_diffs)
+
+# w_spacing = (np.pi*3e8) / 0.2
+w_spacing=378e6
+
+max_scale_len = (np.max(fabry_perot) * w_spacing)/min_cal
+max_scale = np.linspace(0,max_scale_len,len(fabry_perot)) / 1e9
+
+min_scale_len = (np.max(fabry_perot) * w_spacing)/max_cal
+min_scale = np.linspace(0,min_scale_len,len(fabry_perot)) / 1e9
+
+
+fig, ax = plt.subplots(figsize=(10,6))
+# ax.plot(x,C1,color="Orange",label="Channel 1")
+# ax.plot(x,C2,color="Blue",label="Channel 2")
+ax.plot(x,difference,color="red",label="Difference")
+ax.plot(x,fabry_perot,color="black",label="Fabry-Perot")
+# ax.scatter(x_centres,y_centres,color="green",label="Centres")
+# ax.axis(True)
+# ax.grid(True, which='both')
+plt.xlabel("Time (s)",size=20)
+plt.ylabel("Voltage (V)",size=20)
+plt.title("Initial Plot", size=24)
+plt.legend(fancybox=True, shadow=True, prop={'size': 18})
+plt.show()
+
+# fig, ax = plt.subplots(figsize=(10,6))
+# # ax.plot(x,C1,color="Orange",label="Channel 1")
+# # ax.plot(x,C2,color="Blue",label="Channel 2")
+# ax.plot(max_scale,difference,color="red",label="Difference")
+# ax.plot(max_scale,fabry_perot,color="black",label="Fabry-Perot")
+# ax.axis(True)
+# ax.grid(True, which='both')
+# plt.xlabel("Freq. (GHz)",size=20)
+# plt.ylabel("Voltage (V)",size=20)
+# plt.title("Initial Plot", size=24)
+# plt.legend(fancybox=True, shadow=True, prop={'size': 18})
+# plt.xticks(size=18,color='#4f4e4e')
+# plt.yticks(size=18,color='#4f4e4e')
+# sns.set(style='whitegrid')
+# plt.show()
+
+fig, ax = plt.subplots(figsize=(10,6))
+# ax.plot(x,C1,color="Orange",label="Channel 1")
+# ax.plot(x,C2,color="Blue",label="Channel 2")
+ax.plot(min_scale,difference,color="red",label="Difference")
+ax.plot(min_scale,fabry_perot,color="black",label="Fabry-Perot")
+ax.axis(True)
+ax.grid(True, which='both')
+plt.xlabel("Freq. (GHz)",size=20)
+plt.ylabel("Voltage (V)",size=20)
+plt.title("Initial Plot", size=24)
+plt.legend(fancybox=True, shadow=True, prop={'size': 18})
+plt.xticks(size=18,color='#4f4e4e')
+plt.yticks(size=18,color='#4f4e4e')
+sns.set(style='whitegrid')
+plt.show()
+
+
+
+
