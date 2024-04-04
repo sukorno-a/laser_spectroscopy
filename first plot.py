@@ -200,12 +200,13 @@ x_new = x[lower_index:upper_index+1]
 
 
 # ------------------- THESE ARE THE FABRY-PEROT CORRECTED ARRAYS. DO NOT TOUCH!!!!!! ---------------------------------
-axis = axis
+freq = axis
 dopper_free = C1[lower_index:upper_index+1]
 dopper = C2[lower_index:upper_index+1]
 fabry = fabry_perot[lower_index:upper_index+1]
 difference = difference[lower_index:upper_index+1]
-# ---------------------------------------------------------------------------------------------------------------------
+
+# ------------------- MAKING FANCY PLOT: ---------------------------------
 
 matplotlib.rcParams['mathtext.fontset'] = 'cm'
 matplotlib.rcParams['font.family'] = 'STIXGeneral'
@@ -246,7 +247,7 @@ fig.legend(loc=(0.7,0.45))
 fig.tight_layout()  # otherwise the top x-label is slightly clipped
 plt.show()
 
-
+# --------------------------------------------------------------------------------------------------------------
 
 
 
